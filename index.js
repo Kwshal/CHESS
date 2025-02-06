@@ -44,7 +44,7 @@ board.addEventListener('click', function (e) {
           // console.log("currentSquareColor", currentSquareColor);
 
           if (clickedPiece.id.startsWith('p')) {
-               pawnyHighlight(e.target.parentElement.classList.contains('home-row'));
+               pawnyHighlight(e.target.parentElement.classList.contains(`home-row-${currentPlayer[0]}`));
           } else if (clickedPiece.id.startsWith('b')) {
                bishopyHighlight(currentSquareColor);
           } else if (clickedPiece.id.startsWith('r')) {
@@ -89,11 +89,15 @@ let pawnyHighlight = function (homeRow) {
           if (squares[currentSquare - 9] && squares[currentSquare - 9].children.length === 0) {
                squares[currentSquare - 9].classList.add('highlight');
           }
-          if (squares[currentSquare - 9] && squares[currentSquare - 8].firstElementChild && !squares[currentSquare - 8].firstElementChild.id.endsWith(currentPlayer[0])) {
-               squares[currentSquare - 8].classList.add('highlight');
+          if (squares[currentSquare - 8] && squares[currentSquare - 8].firstElementChild && !squares[currentSquare - 8].firstElementChild.id.endsWith(currentPlayer[0])) {
+               if (squares[currentSquare - 8].classList.contains(currentSquareColor)) {
+                    squares[currentSquare - 8].classList.add('highlight');
+               }
           }
-          if (squares[currentSquare - 9] && squares[currentSquare - 10].firstElementChild && !squares[currentSquare - 10].firstElementChild.id.endsWith(currentPlayer[0])) {
-               squares[currentSquare - 10].classList.add('highlight');
+          if (squares[currentSquare - 10] && squares[currentSquare - 10].firstElementChild && !squares[currentSquare - 10].firstElementChild.id.endsWith(currentPlayer[0])) {
+               if (squares[currentSquare - 10].classList.contains(currentSquareColor)) {
+                    squares[currentSquare - 10].classList.add('highlight');
+               }
           }
      } else {
           if (homeRow) squares[currentSquare + 16 - 1].classList.add('highlight');
@@ -101,11 +105,15 @@ let pawnyHighlight = function (homeRow) {
           if (squares[currentSquare - 9] && squares[currentSquare + 7].children.length === 0) {
                squares[currentSquare + 7].classList.add('highlight');
           }
-          if (squares[currentSquare - 9] && squares[currentSquare + 8].firstElementChild && !squares[currentSquare + 8].firstElementChild.id.endsWith(currentPlayer[0])) {
-               squares[currentSquare + 8].classList.add('highlight');
+          if (squares[currentSquare + 8] && squares[currentSquare + 8].firstElementChild && !squares[currentSquare + 8].firstElementChild.id.endsWith(currentPlayer[0])) {
+               if (squares[currentSquare + 8].classList.contains(currentSquareColor)) {
+                    squares[currentSquare + 8].classList.add('highlight');
+               }
           }
-          if (squares[currentSquare - 9] && squares[currentSquare + 6].firstElementChild && !squares[currentSquare + 6].firstElementChild.id.endsWith(currentPlayer[0])) {
-               squares[currentSquare + 6].classList.add('highlight');
+          if (squares[currentSquare + 6] && squares[currentSquare + 6].firstElementChild && !squares[currentSquare + 6].firstElementChild.id.endsWith(currentPlayer[0])) {
+               if (squares[currentSquare + 6].classList.contains(currentSquareColor)) {
+                    squares[currentSquare + 6].classList.add('highlight');
+               }
           }
 
      }
@@ -114,37 +122,41 @@ let pawnyHighlight = function (homeRow) {
 
 let bishopyHighlight = function () {
      for (let i = currentSquare + 9; i <= 64; i += 9) {
-          if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] !== currentSquareColor) {
+          if (!squares[i - 1].classList.contains(currentSquareColor)) break;
+          if (squares[i - 1].firstElementChild && !squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                squares[i - 1].classList.add('highlight');
                break;
-          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] === currentSquareColor) {
+          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                break;
           }
           squares[i - 1].classList.add('highlight');
      }
      for (let i = currentSquare - 9; i > 0; i -= 9) {
-          if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] !== currentSquareColor) {
+          if (!squares[i - 1].classList.contains(currentSquareColor)) break;
+          if (squares[i - 1] && squares[i - 1].firstElementChild && !squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                squares[i - 1].classList.add('highlight');
                break;
-          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] === currentSquareColor) {
+          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                break;
           }
           squares[i - 1].classList.add('highlight');
      }
      for (let i = currentSquare + 7; i <= 64; i += 7) {
-          if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] !== currentSquareColor) {
+          if (!squares[i - 1].classList.contains(currentSquareColor)) break;
+          if (squares[i - 1].firstElementChild && !squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                squares[i - 1].classList.add('highlight');
                break;
-          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] === currentSquareColor) {
+          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                break;
           }
           squares[i - 1].classList.add('highlight');
      }
      for (let i = currentSquare - 7; i > 0; i -= 7) {
-          if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] !== currentSquareColor) {
+          if (!squares[i - 1].classList.contains(currentSquareColor)) break;
+          if (squares[i - 1].firstElementChild && !squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                squares[i - 1].classList.add('highlight');
                break;
-          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] === currentSquareColor) {
+          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                break;
           }
           squares[i - 1].classList.add('highlight');
@@ -153,40 +165,42 @@ let bishopyHighlight = function () {
 
 let rookyHighlight = function () {
      for (let i = currentSquare + 8; i <= 64; i += 8) { // down
-          if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] !== currentSquareColor) {
+          if (squares[i - 1] && squares[i - 1].firstElementChild && !squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                squares[i - 1].classList.add('highlight');
                break;
-          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] === currentSquareColor) {
+          } else if (squares[i - 1] && squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                break;
           }
           squares[i - 1].classList.add('highlight');
      }
 
      for (let i = currentSquare - 8; i >= 1; i -= 8) { // up
-          if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] !== currentSquareColor) {
+          if (squares[i - 1] && squares[i - 1].firstElementChild && !squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                squares[i - 1].classList.add('highlight');
                break;
-          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] === currentSquareColor) {
+          } else if (squares[i - 1] && squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                break;
           }
           squares[i - 1].classList.add('highlight');
      }
 
-     for (let i = currentSquare + 1; i <= currentSquare + 8 - (currentSquare % 8); i++) { // right
-          if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] !== currentSquareColor) {
+     for (let i = currentSquare + 1; i <= currentSquare + (8 - (currentSquare % 8)) % 8; i++) { // right
+          if (squares[i - 1] && squares[i - 1].firstElementChild && !squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                squares[i - 1].classList.add('highlight');
                break;
-          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] === currentSquareColor) {
+          } else if (squares[i - 1] && squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                break;
           }
-          squares[i - 1].classList.add('highlight');
+          if (squares[i - 1]) {
+               squares[i - 1].classList.add('highlight');
+          }
      }
 
      for (let i = currentSquare - 1; i >= currentSquare - (currentSquare - 1) % 8; i--) { // left
-          if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] !== currentSquareColor) {
+          if (squares[i - 1] && squares[i - 1].firstElementChild && !squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                squares[i - 1].classList.add('highlight');
                break;
-          } else if (squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.classList[1] === currentSquareColor) {
+          } else if (squares[i - 1] && squares[i - 1].firstElementChild && squares[i - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                break;
           }
           squares[i - 1].classList.add('highlight');
@@ -195,24 +209,26 @@ let rookyHighlight = function () {
 
 let nightyHighlight = function () {
      let validSquares = [6, -6, 10, -10, 15, -15, 17, -17];
-     validSquares.forEach(square => {
+     for (let square of validSquares) {
           let validd = squares[currentSquare + square - 1] && squares[currentSquare + square - 1].classList[1] !== currentSquareColor;
-          if (validd && currentSquare + square <= 64 && currentSquare + square >= 1) {
+          let inRange = currentSquare + square <= 64 && currentSquare + square >= 1;
+          let ownPiece = squares[currentSquare + square - 1] && squares[currentSquare + square - 1].firstElementChild && squares[currentSquare + square - 1].firstElementChild.id.endsWith(currentPlayer[0]);
+          if (validd && inRange && !ownPiece) {
                squares[currentSquare + square - 1].classList.add('highlight');
           }
-     });
+     };
 }
 // nightyHighlight();
 
 let kingyHighlight = function () {
      let validSquares = [1, -1, 7, -7, 8, -8, 9, -9];
-     validSquares.forEach(square => {
+     for (let square of validSquares) {
           if (currentSquare + square <= 64 && currentSquare + square >= 1) {
-               if (squares[currentSquare + square - 1].firstElementChild && squares[currentSquare + square - 1].firstElementChild.classList[1] !== currentSquareColor) {
+               if (squares[currentSquare + square - 1].firstElementChild && !squares[currentSquare + square - 1].firstElementChild.id.endsWith(currentPlayer[0])) {
                     squares[currentSquare + square - 1].classList.add('highlight');
                }
                squares[currentSquare + square - 1].classList.add('highlight');
           }
-     });
+     };
 }
 // kingyHighlight();
