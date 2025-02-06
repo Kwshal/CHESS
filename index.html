@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chess</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="index.js"></script>
+</head>
+<body>
+    <p id="player">white</p>
+    <div id="board">
+        <div class="square white" slot="1"><img class="piece" id="r1-b" src="/chess pieces/rb.svg" alt="">1</div>
+        <div class="square black" slot="2"><img class="piece" id="n1-b" src="/chess pieces/nb.svg" alt="">2</div>
+        <div class="square white" slot="3"><img class="piece" id="b1-b" src="/chess pieces/bb.svg" alt="">3</div>
+        <div class="square black" slot="4"><img class="piece" id="q1-b" src="/chess pieces/qb.svg" alt="">4</div>
+        <div class="square white" slot="5"><img class="piece" id="k1-b" src="/chess pieces/kb.svg" alt="">5</div>
+        <div class="square black" slot="6"><img class="piece" id="b2-b" src="/chess pieces/bb.svg" alt="">6</div>
+        <div class="square white" slot="7"><img class="piece" id="n2-b" src="/chess pieces/nb.svg" alt="">7</div>
+        <div class="square black" slot="8"><img class="piece" id="r2-b" src="/chess pieces/rb.svg" alt="">8</div>
+        <div class="square black home-row" slot="9"><img class="piece" id="p1-b" src="/chess pieces/pb.svg" alt="">9</div>
+        <div class="square white home-row" slot="10"><img class="piece" id="p2-b" src="/chess pieces/pb.svg" alt="">10</div>
+        <div class="square black home-row" slot="11"><img class="piece" id="p3-b" src="/chess pieces/pb.svg" alt="">11</div>
+        <div class="square white home-row" slot="12"><img class="piece" id="p4-b" src="/chess pieces/pb.svg" alt="">12</div>
+        <div class="square black home-row" slot="13"><img class="piece" id="p5-b" src="/chess pieces/pb.svg" alt="">13</div>
+        <div class="square white home-row" slot="14"><img class="piece" id="p6-b" src="/chess pieces/pb.svg" alt="">14</div>
+        <div class="square black home-row" slot="15"><img class="piece" id="p7-b" src="/chess pieces/pb.svg" alt="">15</div>
+        <div class="square white home-row" slot="16"><img class="piece" id="p8-b" src="/chess pieces/pb.svg" alt="">16</div>
+        <div class="square white" slot="17">17</div>
+        <div class="square black" slot="18">18</div>
+        <div class="square white" slot="19">19</div>
+        <div class="square black" slot="20">20</div>
+        <div class="square white" slot="21">21</div>
+        <div class="square black" slot="22">22</div>
+        <div class="square white" slot="23">23</div>
+        <div class="square black" slot="24">24</div>
+        <div class="square black" slot="25">25</div>
+        <div class="square white" slot="26">26</div>
+        <div class="square black" slot="27">27</div>
+        <div class="square white" slot="28">28</div>
+        <div class="square black" slot="29">29</div>
+        <div class="square white" slot="30">30</div>
+        <div class="square black" slot="31">31</div>
+        <div class="square white" slot="32">32</div>
+        <div class="square white" slot="33">33</div>
+        <div class="square black" slot="34">34</div>
+        <div class="square white" slot="35">35</div>
+        <div class="square black" slot="36">36</div>
+        <div class="square white" slot="37">37</div>
+        <div class="square black" slot="38">38</div>
+        <div class="square white" slot="39">39</div>
+        <div class="square black" slot="40">40</div>
+        <div class="square black" slot="41">41</div>
+        <div class="square white" slot="42">42</div>
+        <div class="square black" slot="43">43</div>
+        <div class="square white" slot="44">44</div>
+        <div class="square black" slot="45">45</div>
+        <div class="square white" slot="46">46</div>
+        <div class="square black" slot="47">47</div>
+        <div class="square white" slot="48">48</div>
+        <div class="square white home-row" slot="49"><img class="piece" id="p1-w" src="/chess pieces/pw.svg" alt="">49</div>
+        <div class="square black home-row" slot="50"><img class="piece" id="p2-w" src="/chess pieces/pw.svg" alt="">50</div>
+        <div class="square white home-row" slot="51"><img class="piece" id="p3-w" src="/chess pieces/pw.svg" alt="">51</div>
+        <div class="square black home-row" slot="52"><img class="piece" id="p4-w" src="/chess pieces/pw.svg" alt="">52</div>
+        <div class="square white home-row" slot="53"><img class="piece" id="p5-w" src="/chess pieces/pw.svg" alt="">53</div>
+        <div class="square black home-row" slot="54"><img class="piece" id="p6-w" src="/chess pieces/pw.svg" alt="">54</div>
+        <div class="square white home-row" slot="55"><img class="piece" id="p7-w" src="/chess pieces/pw.svg" alt="">55</div>
+        <div class="square black home-row" slot="56"><img class="piece" id="p8-w" src="/chess pieces/pw.svg" alt="">56</div>
+        <div class="square black" slot="57"><img class="piece" id="r1-w" src="/chess pieces/rw.svg" alt="">57</div>
+        <div class="square white" slot="58"><img class="piece" id="n1-w" src="/chess pieces/nw.svg" alt="">58</div>
+        <div class="square black" slot="59"><img class="piece" id="b1-w" src="/chess pieces/bw.svg" alt="">59</div>
+        <div class="square white" slot="60"><img class="piece" id="q1-w" src="/chess pieces/qw.svg" alt="">60</div>
+        <div class="square black" slot="61"><img class="piece" id="k1-w" src="/chess pieces/kw.svg" alt="">61</div>
+        <div class="square white" slot="62"><img class="piece" id="b2-w" src="/chess pieces/bw.svg" alt="">62</div>
+        <div class="square black" slot="63"><img class="piece" id="n2-w" src="/chess pieces/nw.svg" alt="">63</div>
+        <div class="square white" slot="64"><img class="piece" id="r2-w" src="/chess pieces/rw.svg" alt="">64</div>
+    </div>
+</body>
+</html>
