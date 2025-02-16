@@ -1,6 +1,7 @@
 :root {
   --board-light-square: #ebecd0;
-  --board-dark-square: #779556;
+  /* --board-dark-square: #779556; */
+  --board-dark-square: #586e40;
   --board-border: #b2b2b2;
 }
 
@@ -76,3 +77,24 @@ body {
   background-color: rgba(0, 128, 128, 0.5);
   /* border-radius: 50%; */
 }
+.w-covered:has(img#k1-b)::before, .b-covered:has(img#k1-w)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 0, 0, 0.6);
+  /* border: 2px solid red; */
+}
+.w-covered.white:has(img#k1-b)::before, .b-covered.white:has(img#k1-w)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 0, 0, 0.6);
+  /* border: 2px solid red; */
+}
+

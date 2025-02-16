@@ -1,8 +1,29 @@
+# todo
+
+simulation done !!!!
+
+dont move into check done!!!!!
+dont castle in check done!!!!!
+dont castle through check done!!!!!
+
+dont move other pieces while in check ??????????????
+
+
+- pins done !!!!!
+- check done !!!!!
+
+- en passant
+- promotion:
+- checkmates
+
+checking piece puts a gunnnnnnnnn !!!!
 
 
 
 
 
 
-- promotion
-- en passant and castle
+
+
+
+aiuyusiofhjdkslsldfj
