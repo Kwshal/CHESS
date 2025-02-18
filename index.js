@@ -14,7 +14,8 @@ let canCastle = false;
 let kingCanMove = false;
 let kingInCheck = false;
 let checkingPiece = null;
-let coveredSquares = [];
+// let coveringInt = null;
+let interposedSquares = [];
 let putsOwnKingInCheck = false;
 function handlePlayerSwitch() {
      currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
@@ -28,6 +29,12 @@ function removeHighlights() {
           square.classList.remove('highlight');
      });
 }
+function removeInterposes(square) {
+     if (square.classList.contains('interposed'))
+          squares.forEach(square => {
+               square.classList.remove('interposed');
+          });
+}
 function removeIgnorable() {
      squares.forEach(square => {
           if (square.firstElementChild && square.firstElementChild.classList.contains('ignorable')) square.firstElementChild.classList.remove('ignorable');
@@ -39,17 +46,30 @@ function checkOwnKing(ownKing) {
      return putsOwnKingInCheck;
 }
 function checkOppKing(oppKing) {
-     // console.log(oppKing.id);
-     // checkingPiece = piece;
-     // coveredSquaresFiller(checkingPiece);
      oppKing.parentElement.classList.contains(`${currentPlayer[0]}-covered`) ? kingInCheck = true : kingInCheck = false;
-     // console.log("kingInCheck:", kingInCheck);
-     // console.log(kingInCheck, oppKing.id, checkingPiece.id, checkingPiece.parentElement.getAttribute('slot'));
      return kingInCheck;
 }
 
-function checkMobility(piece) {
-     checkingPiece
+function interpositionSquares(oppKing, checkingPiece) {
+     interposedSquares = [];
+     let kingSquare = Number(oppKing.parentElement.getAttribute('slot'));
+     let checkingPieceSqaure = Number(checkingPiece.parentElement.getAttribute("slot"));
+     let d = Math.abs(kingSquare - checkingPieceSqaure); // difference
+     let n = d % 7 === 0 ? 7 : d % 8 === 0 ? 8 : 1;
+
+     checkingPiece.parentElement.classList.add("interposed")
+     if (kingSquare > checkingPieceSqaure) {
+          for (let i = checkingPieceSqaure + n; i < kingSquare; i += n) {
+               squares[i].classList.add('interposed');
+               interposedSquares.push(i);
+          }
+     } else {
+          for (let i = checkingPieceSqaure - n; i > kingSquare; i -= n) {
+               squares[i].classList.add('interposed');
+               interposedSquares.push(i);
+          }
+     }
+     return interposedSquares;
 }
 
 board.addEventListener('click', function (e) {
@@ -63,26 +83,28 @@ board.addEventListener('click', function (e) {
           let ownKing = document.getElementById(`k1-${currentPlayer[0]}`);
 
           removeHighlights();
-          // clickedPiece.classList.remove('ignorable');
+          // clickedPiece.classList.remove('ignorable')
           removeIgnorable();
           checkingPiece = e.target.id;
           clickedPiece = e.target;
           clickedPiece.classList.add('ignorable');
-          let ignorable = clickedPiece.classList.add('ignorable');
+          // let ignorable = clickedPiece.classList.add('ignorable');
 
-          checkForCoveredSquare();
+          updateCoveredSquares();
           // checkOwnKing();
           currentSquare = parseInt(clickedPiece.parentElement.getAttribute('slot'));
           currentSquareColor = clickedPiece.parentElement.classList[1];
           // checkOppKing(oppKing)
           // highlight valid moves
-          if (kingInCheck) {
+          if (checkOwnKing(ownKing)) {
+
+               // console.log("here")
                if (clickedPiece.id.startsWith('p')) {
                     pawnyHighlight(clickedPiece.parentElement.classList.contains(`home-row-${opponentPlayer[0]}`));
                } else if (clickedPiece.id.startsWith('b')) {
-                    bishopyHighlight(true);
+                    bishopyHighlight();
                } else if (clickedPiece.id.startsWith('r')) {
-                    rookyHighlight(true);
+                    rookyHighlight();
                } else if (clickedPiece.id.startsWith('n')) {
                     nightyHighlight();
                } else if (clickedPiece.id.startsWith('k')) {
@@ -92,6 +114,7 @@ board.addEventListener('click', function (e) {
                }
           }
           else if (!kingInCheck && !checkOwnKing(ownKing)) {
+               // console.log("there")
                if (clickedPiece.id.startsWith('p')) {
                     pawnyHighlight(clickedPiece.parentElement.classList.contains(`home-row-${currentPlayer[0]}`));
                } else if (clickedPiece.id.startsWith('b')) {
@@ -105,15 +128,17 @@ board.addEventListener('click', function (e) {
                } else if (clickedPiece.id.startsWith('q')) {
                     queenyHighlight();
                }
-          }
-          else console.log("error");
+          } else console.log("III error");
+
           setTimeout(() => {
                clickedPiece.classList.remove('ignorable');
-               checkForCoveredSquare();
+               updateCoveredSquares();
           }, 1000);
+
      } else if (oppPiece && oppPieceAttacked) {
           let oppKing = document.getElementById(`k1-${opponentPlayer[0]}`);
           oppPieceSquare.appendChild(clickedPiece);
+          removeInterposes(oppPieceSquare);
           // console.log("playedPiece", playedPiece.id);
           // castling
           if (clickedPiece.id.startsWith('k') || clickedPiece.id.startsWith('r')) {
@@ -123,26 +148,27 @@ board.addEventListener('click', function (e) {
           // console.log(clickedPiece.id[0], "---->", e.target.id[0]);
           // console.log(coveredSquares);
           // clickedPiece = null;
-          currentSquare = e.target.parentElement.getAttribute('slot');
-          currentSquareColor = e.target.parentElement.classList[1];
+          // currentSquare = e.target.parentElement.getAttribute('slot');
+          // currentSquareColor = e.target.parentElement.classList[1];
           e.target.remove();
-          checkForCoveredSquare();
+          updateCoveredSquares();
           checkOppKing(oppKing);
           if (checkOppKing(oppKing)) {
                checkingPiece = oppPieceSquare.firstElementChild;
-               coveredSquaresFiller(checkingPiece);
-               console.log("checkingPiece:", checkingPiece.id, "coveredSquares:", coveredSquares);
+               interposedSquares();
+               // interpositionSquares(oppKing, currentSquare, 8);
+               // coveredSquaresFiller(checkingPiece, oppKing, targetSquare);
+               // console.log("checkingPiece:", checkingPiece.id, "coveredSquares:", coveredSquares);
           }
           handlePlayerSwitch();
           // checkForChecks();
           removeHighlights();
-
      }
      else if (targetIsHighlightedSquare) {
           let oppKing = document.getElementById(`k1-${opponentPlayer[0]}`);
           targetSquare.appendChild(clickedPiece);
-          playedPiece = targetSquare.firstElementChild;
-          // console.log("playedPiece", playedPiece.id);
+          removeInterposes(targetSquare);
+
           // castling
           if (clickedPiece.id.startsWith('k') && canCastle && targetSquare.classList.contains('ooo')) {
                castledRookPlace1.appendChild(castlingRook1);
@@ -150,17 +176,14 @@ board.addEventListener('click', function (e) {
           } else if (clickedPiece.id.startsWith('k') && canCastle && targetSquare.classList.contains('oo')) {
                castledRookPlace2.appendChild(castlingRook2);
                canCastle = false;
-               // kingCanMove = false;
           }
-          // clickedPiece = null;
-          currentSquare = e.target.getAttribute('slot');
-          currentSquareColor = e.target.classList[1];
-          checkForCoveredSquare();
-          checkOppKing(oppKing);
+          updateCoveredSquares();
+          // checkOppKing(oppKing);
           if (checkOppKing(oppKing)) {
-               checkingPiece = oppPieceSquare.firstElementChild;
-               coveredSquaresFiller(checkingPiece);
-               console.log("checkingPiece:", checkingPiece.id, "coveredSquares:", coveredSquares);
+               checkingPiece = clickedPiece;
+               interpositionSquares(oppKing, checkingPiece);
+               // coveredSquaresFiller(checkingPiece);
+               // console.log("checkingPiece:", checkingPiece.id, "coveredSquares:", coveredSquares);
           }
 
           handlePlayerSwitch();
@@ -170,140 +193,183 @@ board.addEventListener('click', function (e) {
      } else removeHighlights();
 });
 
-let coveredSquaresFiller = function (piece) {
-     if (piece.id.startsWith('b')) {
-          bishopyHighlight(currentSquareColor);
-     } else if (piece.id.startsWith('r')) {
-          rookyHighlight();
-     } else if (piece.id.startsWith('q')) {
-          queenyHighlight();
-     }
-     removeHighlights();
-     if (coveredSquares.length > 0) {
-          console.log(coveredSquares);
+let isPawnInterposed = function (n, flipfactor) {
+     return squares[currentSquare + n * flipfactor].classList.contains('interposed');
+}
+let isInterposed = function (n) {
+     if (squares[n]) {
+     return squares[n].classList.contains('interposed');
      }
 }
 
 let pawnyHighlight = function () {
-     coveredSquares = [];
+     // coveredSquares = [];
      let flipfactor = currentPlayer === 'white' ? 1 : -1;
+     let f = flipfactor;
      let homeRow = squares[currentSquare].classList.contains(`home-row-${currentPlayer[0]}`);
      let pieceInFront = squares[currentSquare - 8 * flipfactor] && squares[currentSquare - 8 * flipfactor].firstElementChild;
      let pieceInFront2 = squares[currentSquare - 16 * flipfactor] && squares[currentSquare - 16 * flipfactor].firstElementChild;
      let pieceInFrontLeft = squares[currentSquare - 9 * flipfactor] && squares[currentSquare - 9 * flipfactor].firstElementChild && !squares[currentSquare - 9 * flipfactor].firstElementChild.id.endsWith(currentPlayer[0]) && squares[currentSquare - 9 * flipfactor].classList.contains(currentSquareColor);
      let pieceInFrontRight = squares[currentSquare - 7 * flipfactor] && squares[currentSquare - 7 * flipfactor].firstElementChild && !squares[currentSquare - 7 * flipfactor].firstElementChild.id.endsWith(currentPlayer[0]) && squares[currentSquare - 7 * flipfactor].classList.contains(currentSquareColor);
 
-     if (!pieceInFront) {
-          squares[currentSquare - 8 * flipfactor].classList.add('highlight');
-          if (homeRow && !pieceInFront2) {
-               squares[currentSquare - 16 * flipfactor].classList.add('highlight');
-          }
-     }
-     if (pieceInFrontLeft) {
-          squares[currentSquare - 9 * flipfactor].classList.add('highlight');
-          if (pieceInFrontLeft.id === `k1-${opponentPlayer[0]}`) {
-               opponentKingInCheck = true;
-          }
-     }
-     if (pieceInFrontRight) {
-          squares[currentSquare - 7 * flipfactor].classList.add('highlight');
-          if (pieceInFrontRight.id === `k1-${opponentPlayer[0]}`) {
-               opponentKingInCheck = true;
-          }
-     }
-}
-
-
-let bishopyHighlight = function (queen) {
-     if (!queen) {
-
-          coveredSquares = [];
-     }
-     let validSquares = [9, -9, 7, -7];
-     for (let square of validSquares) {
-          for (let i = currentSquare + square; i <= 64 && i >= 0; i += square) {
-               if (!squares[i].classList.contains(currentSquareColor)) break;
-               if (squares[i].firstElementChild && !squares[i].firstElementChild.id.endsWith(currentPlayer[0])) {
-                    squares[i].classList.add('highlight');
-                    if (squares[i].firstElementChild.id === `k1-${opponentPlayer[0]}`) {
-                         opponentKingInCheck = true;
-                    }
-                    coveredSquares.push(i);
-                    console.log(i);
-                    break;
-               } else if (squares[i].firstElementChild && squares[i].firstElementChild.id.endsWith(currentPlayer[0])) {
-                    break;
+     if (kingInCheck) {
+          if (!pieceInFront) {
+               if (isPawnInterposed(-8, f)) squares[currentSquare - 8 * flipfactor].classList.add('highlight');
+               if (homeRow && !pieceInFront2) {
+                    if (isPawnInterposed(-16, f)) squares[currentSquare - 16 * flipfactor].classList.add('highlight');
                }
-               squares[i].classList.add('highlight');
+          }
+          if (pieceInFrontLeft) {
+               if (isPawnInterposed(-9, f)) squares[currentSquare - 9 * flipfactor].classList.add('highlight');
+               if (pieceInFrontLeft.id === `k1-${opponentPlayer[0]}`) {
+                    opponentKingInCheck = true;
+               }
+          }
+          if (pieceInFrontRight) {
+               if (isPawnInterposed(-7, f)) squares[currentSquare - 7 * flipfactor].classList.add('highlight');
+               if (pieceInFrontRight.id === `k1-${opponentPlayer[0]}`) {
+                    opponentKingInCheck = true;
+               }
+          }
 
-               coveredSquares.push(i);
-               console.log(i);
+     } else {
+          if (!pieceInFront) {
+               squares[currentSquare - 8 * flipfactor].classList.add('highlight');
+               if (homeRow && !pieceInFront2) {
+                    squares[currentSquare - 16 * flipfactor].classList.add('highlight');
+               }
+          }
+          if (pieceInFrontLeft) {
+               squares[currentSquare - 9 * flipfactor].classList.add('highlight');
+               if (pieceInFrontLeft.id === `k1-${opponentPlayer[0]}`) {
+                    opponentKingInCheck = true;
+               }
+          }
+          if (pieceInFrontRight) {
+               squares[currentSquare - 7 * flipfactor].classList.add('highlight');
+               if (pieceInFrontRight.id === `k1-${opponentPlayer[0]}`) {
+                    opponentKingInCheck = true;
+               }
           }
      }
 }
 
-let rookyHighlight = function (queen) {
-     if (!queen) {
 
-          coveredSquares = [];
+let bishopyHighlight = function () {
+     // let int;
+     // let oppKing = document.getElementById(`k1-${opponentPlayer[0]}`);
+     // if (!queen) {
+     //      coveredSquares = [];
+     // }
+     let validSquares = [9, -9, 7, -7];
+     if (kingInCheck) {
+
+          for (let square of validSquares) {
+               for (let i = currentSquare + square; i <= 64 && i >= 0; i += square) {
+                    if (!squares[i].classList.contains(currentSquareColor)) break;
+                    if(isInterposed(i)) squares[i].classList.add('highlight');
+               }
+          }
+     } else {
+          for (let square of validSquares) {
+               for (let i = currentSquare + square; i <= 64 && i >= 0; i += square) {
+                    if (!squares[i].classList.contains(currentSquareColor)) break;
+                    if (squares[i].firstElementChild && !squares[i].firstElementChild.id.endsWith(currentPlayer[0])) {
+                         // int = square;
+                         squares[i].classList.add('highlight');
+                         // console.log(coveredSquares);
+                         break;
+                    } else if (squares[i].firstElementChild && squares[i].firstElementChild.id.endsWith(currentPlayer[0])) {
+                         break;
+                    }
+                    squares[i].classList.add('highlight');
+
+               }
+          }
      }
+     // return int;
+}
+
+let rookyHighlight = function () {
+     // let int;
+     // if (!queen) {
+     //           coveredSquares = [];
+     // }
      let validSquares = [[8, -8], [1, -1]];
-     for (let square of validSquares[0]) {
-          for (let i = currentSquare + square; i <= 64 && i >= 0; i += square) {
-               if (squares[i] && squares[i].firstElementChild && !squares[i].firstElementChild.id.endsWith(currentPlayer[0])) {
-                    squares[i].classList.add('highlight');
-                    if (squares[i].firstElementChild.id === `k1-${opponentPlayer[0]}`) {
-                         opponentKingInCheck = true;
-                         coveredSquares.push(i);
-                         console.log(i);
-                    }
-                    break;
-               } else if (squares[i] && squares[i].firstElementChild && squares[i].firstElementChild.id.endsWith(currentPlayer[0])) break;
-               if (squares[i]) squares[i].classList.add('highlight');
-               console.log(i);
-               // coveredSquares.push(i);
+     if (kingInCheck) {
+          for (let square of validSquares[0]) {
+               for (let i = currentSquare + square; i <= 64 && i >= 0; i += square) {
+                    if(isInterposed(i)) squares[i].classList.add('highlight');
+               }
+          }
+          for (let square of validSquares[1]) {
+               let row = Math.floor(currentSquare / 8);
+               for (let i = currentSquare + square; i >= row * 8 && i < (row + 1) * 8; i += square) {
+                    if(isInterposed(i)) squares[i].classList.add('highlight');
+               }
           }
      }
-     for (let square of validSquares[1]) {
-          let row = Math.floor(currentSquare / 8);
-          for (let i = currentSquare + square; i >= row * 8 && i < (row + 1) * 8; i += square) {
-               if (squares[i] && squares[i].firstElementChild && !squares[i].firstElementChild.id.endsWith(currentPlayer[0])) {
-                    squares[i].classList.add('highlight');
-                    if (squares[i].firstElementChild.id === `k1-${opponentPlayer[0]}`) {
-                         opponentKingInCheck = true;
-                         coveredSquares.push(i);
-                         console.log(i);
-                    }
-                    break;
-               } else if (squares[i] && squares[i].firstElementChild && squares[i].firstElementChild.id.endsWith(currentPlayer[0])) break;
-               if (squares[i]) squares[i].classList.add('highlight');
-               console.log(i);
-               // coveredSquares.push(i);
+     else {
+          for (let square of validSquares[0]) {
+               for (let i = currentSquare + square; i <= 64 && i >= 0; i += square) {
+                    if (squares[i] && squares[i].firstElementChild && !squares[i].firstElementChild.id.endsWith(currentPlayer[0])) {
+                         squares[i].classList.add('highlight');
+                         // if (checkOppKing(oppKing)) int = square;
+                         break;
+                    } else if (squares[i] && squares[i].firstElementChild && squares[i].firstElementChild.id.endsWith(currentPlayer[0])) break;
+                    if (squares[i]) squares[i].classList.add('highlight');
+                    // console.log(coveredSquares);
+                    coveringnInt = square;
+               }
+          }
+          for (let square of validSquares[1]) {
+               let row = Math.floor(currentSquare / 8);
+               for (let i = currentSquare + square; i >= row * 8 && i < (row + 1) * 8; i += square) {
+                    if (squares[i] && squares[i].firstElementChild && !squares[i].firstElementChild.id.endsWith(currentPlayer[0])) {
+                         squares[i].classList.add('highlight');
+                         // if (checkOppKing(oppKing)) int = square;
+                         break;
+                    } else if (squares[i] && squares[i].firstElementChild && squares[i].firstElementChild.id.endsWith(currentPlayer[0])) break;
+                    if (squares[i]) squares[i].classList.add('highlight');
+                    // console.log(coveredSquares);
+                    // coveredSquares.push(i);
+               }
           }
      }
+     // return int;
 }
 
 let queenyHighlight = function () {
-     coveredSquares = [];
-     bishopyHighlight(true);
-     rookyHighlight(true);
+     // coveredSquares = [];
+     bishopyHighlight();
+     rookyHighlight();
 }
 
 let nightyHighlight = function () {
      coveredSquares = [];
      let validSquares = [6, -6, 10, -10, 15, -15, 17, -17];
+     if (kingInCheck) {
+          
+     for (let square of validSquares) {
+          let i = currentSquare+square;
+          let validd = squares[currentSquare + square] && squares[currentSquare + square].classList[1] !== currentSquareColor;
+          let inRange = currentSquare + square <= 64 && currentSquare + square >= 1;
+          let ownPiece = squares[currentSquare + square] && squares[currentSquare + square].firstElementChild && squares[currentSquare + square].firstElementChild.id.endsWith(currentPlayer[0]);
+          if (validd && inRange && !ownPiece && isInterposed(i)) {
+               squares[currentSquare + square].classList.add('highlight');
+          }
+     }
+     }
+     else {
      for (let square of validSquares) {
           let validd = squares[currentSquare + square] && squares[currentSquare + square].classList[1] !== currentSquareColor;
           let inRange = currentSquare + square <= 64 && currentSquare + square >= 1;
           let ownPiece = squares[currentSquare + square] && squares[currentSquare + square].firstElementChild && squares[currentSquare + square].firstElementChild.id.endsWith(currentPlayer[0]);
           if (validd && inRange && !ownPiece) {
                squares[currentSquare + square].classList.add('highlight');
-               if (squares[currentSquare + square].firstElementChild && squares[currentSquare + square].firstElementChild.id === `k1-${opponentPlayer[0]}`) {
-                    opponentKingInCheck = true;
-                    coveredSquares.push(currentSquare + square);
-               }
           }
      };
+     }
 }
 
 let kingyHighlight = function () {
@@ -347,7 +413,7 @@ let castleCriteria = function () {
      return canCastle;
 }
 
-function checkForCoveredSquare() {
+function updateCoveredSquares() {
      squares.forEach(square => {
           [...square.classList].forEach(cls => {
                if (cls.endsWith('covered')) {

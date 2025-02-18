@@ -29,7 +29,7 @@ body {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   box-sizing: border-box;
-  border: 10px solid #c0c0c0;
+  /* border: 10px solid #c0c0c0; */
 
   height: 700px;
   width: 700px;

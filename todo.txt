@@ -7,6 +7,7 @@ dont castle in check done!!!!!
 dont castle through check done!!!!!
 
 dont move other pieces while in check ??????????????
+--- interposition, line of attack
 
 
 - pins done !!!!!
@@ -15,6 +16,7 @@ dont move other pieces while in check ??????????????
 - en passant
 - promotion:
 - checkmates
+- feedback  ??
 
 checking piece puts a gunnnnnnnnn !!!!
 
