@@ -155,7 +155,7 @@ board.addEventListener('click', function (e) {
           checkOppKing(oppKing);
           if (checkOppKing(oppKing)) {
                checkingPiece = oppPieceSquare.firstElementChild;
-               interposedSquares();
+               // interposedSquares();
                // interpositionSquares(oppKing, currentSquare, 8);
                // coveredSquaresFiller(checkingPiece, oppKing, targetSquare);
                // console.log("checkingPiece:", checkingPiece.id, "coveredSquares:", coveredSquares);
