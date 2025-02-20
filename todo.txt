@@ -1,25 +1,20 @@
+
+
+
+# Problems
+- pieces jumping to capture the checking piece
+- pinned piece isn't moving even if it can capture the checking piece
+
+
 # todo
-
-simulation done !!!!
-
-dont move into check done!!!!!
-dont castle in check done!!!!!
-dont castle through check done!!!!!
-
-dont move other pieces while in check ??????????????
---- interposition, line of attack
-
-
-- pins done !!!!!
-- check done !!!!!
-
+- check escaping
 - en passant
-- promotion:
+- promotion
 - checkmates
+
+# Laters
 - feedback  ??
-
-checking piece puts a gunnnnnnnnn !!!!
-
+- checking piece puts a gunnnnnnnnn !!!!
 
 
 
@@ -28,4 +23,4 @@ checking piece puts a gunnnnnnnnn !!!!
 
 
 
-aiuyusiofhjdkslsldfj
+

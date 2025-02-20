@@ -64,6 +64,9 @@ body {
 .black {
   background-color: var(--board-dark-square);
 }
+#player {
+  font-size: 3.5em;
+}
 
 .highlight::after {
   content: '';
@@ -98,3 +101,6 @@ body {
   /* border: 2px solid red; */
 }
 
+.interposed {
+  background-color: #ff00009c;
+}
