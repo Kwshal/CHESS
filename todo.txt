@@ -4,6 +4,8 @@
 # Problems
 - pieces jumping to capture the checking piece
 - pinned piece isn't moving even if it can capture the checking piece
+- 
+- discovered checks isn't working properly
 
 
 # todo
