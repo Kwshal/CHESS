@@ -47,18 +47,35 @@ function checkOwnKing(ownKing) {
 }
 function checkOppKing(oppKing) {
      // clickedPiece
+     let ignorablePiece = [...pieces].find(piece => piece.classList.contains('ignorable'));
+
      oppKing.parentElement.classList.contains(`${currentPlayer[0]}-covered`) ? kingInCheck = true : kingInCheck = false;
      return kingInCheck;
 }
 
-function interpositionSquares(king) {
+function setCheckingPiece(king) {
+     // checkingPiece = null;
+     pieces.forEach(piece => {
+          if (king.parentElement.classList.contains(`${piece.id}-covered`) && piece.id.endsWith(currentPlayer[0])) {
+               checkingPiece = piece;
+          }
+     });
+     return checkingPiece;
+}
 
+function targetIgnorable() {
+
+     let ignorablePiece = [...pieces].find(piece => piece.classList.contains('ignorable'));
+}
+
+function interpositionSquares(king) {
+     let ignorablePiece = [...pieces].find(piece => piece.classList.contains('ignorable'));
      interposedSquares = [];
-     if (checkingPiece) {
+     if (setCheckingPiece(king) && ignorablePiece && checkingPiece.id === ignorablePiece.id) {
           let kingSquare = Number(king.parentElement.getAttribute('slot'));
           let checkingPieceSqaure = Number(checkingPiece.parentElement.getAttribute("slot"));
           let d = Math.abs(kingSquare - checkingPieceSqaure); // difference
-          let n = d % 7 === 0 ? 7 : d % 9 === 0 ? 9 : d >= 8 && d % 8 === 0 ? 8 : d < 8 ? 1 : null;
+          let n = d < 56 && d % 7 === 0 ? 7 : d % 9 === 0 ? 9 : d >= 8 && d % 8 === 0 ? 8 : d < 8 ? 1 : null;
 
           checkingPiece.parentElement.classList.add("interposed");
           if (n !== null) {
@@ -80,6 +97,8 @@ function interpositionSquares(king) {
 }
 
 board.addEventListener('click', function (e) {
+     let ownKing = document.getElementById(`k1-${currentPlayer[0]}`);
+     let oppKing = document.getElementById(`k1-${opponentPlayer[0]}`);
      let ownPiece = e.target.classList.contains('piece') && e.target.id.endsWith(currentPlayer[0]);
      let oppPiece = e.target.classList.contains('piece') && e.target.id.endsWith(opponentPlayer[0]);
      let oppPieceSquare = e.target.parentElement;
@@ -87,7 +106,6 @@ board.addEventListener('click', function (e) {
      let targetSquare = e.target;
      let targetIsHighlightedSquare = e.target.classList.contains('highlight');
      let targetIsInterposedSquare = e.target.classList.contains('interposed');
-     let oppPieceCapturable = e.target.parentElement.classList.contains('interposed');
      if (ownPiece) {
           let ownKing = document.getElementById(`k1-${currentPlayer[0]}`);
           let oppKing = document.getElementById(`k1-${opponentPlayer[0]}`);
@@ -102,10 +120,13 @@ board.addEventListener('click', function (e) {
           // let ignorable = clickedPiece.classList.add('ignorable');
 
           updateCoveredSquares(); // returns coveredSquares
-          checkOwnKing(ownKing);
-          checkOppKing(oppKing);
-          if (kingInCheck) interpositionSquares(oppKing);
-          if (putsOwnKingInCheck) interpositionSquares(ownKing);
+          if (checkOppKing(oppKing)) {
+
+               interpositionSquares(oppKing);
+          }
+          if (checkOwnKing(ownKing)) interpositionSquares(ownKing);
+          // else setCheckingPiece(ownKing);
+
           // checkOwnKing(ownKing);
           currentSquare = parseInt(clickedPiece.parentElement.getAttribute('slot'));
           currentSquareColor = clickedPiece.parentElement.classList[1];
@@ -174,20 +195,32 @@ board.addEventListener('click', function (e) {
 
      } else if (oppPiece && oppPieceAttacked) {
           let oppKing = document.getElementById(`k1-${opponentPlayer[0]}`);
-          if ((kingInCheck || putsOwnKingInCheck) && !oppPieceCapturable) {
-               // console.log(kingInCheck, putsOwnKingInCheck, oppPieceCapturable, checkingPiece.id);
-               console.log(1)
+          let ownKing = document.getElementById(`k1-${currentPlayer[0]}`);
+          let oppPieceCapturable = oppPieceSquare.classList.contains('interposed') || oppPieceSquare.classList.contains(`${clickedPiece.id[3]}-covered`);
+          let ignorablePiece = [...pieces].find(piece => piece.classList.contains('ignorable'));
+          let pinned = oppKing.id[0] === ignorablePiece.id[0];
+
+          if (kingInCheck && putsOwnKingInCheck ) {
+               // console.log(kingInCheck, putsOwnKingInCheck, targetIsInterposedSquare);
+               console.log(0o0)
+               return;
+          }
+          else if ((kingInCheck || putsOwnKingInCheck) && !oppPieceCapturable && pinned) {
+               console.log(kingInCheck, putsOwnKingInCheck, oppPieceCapturable);
+               // console.log(ownKing.parentElement.classList)
+               console.log(checkingPiece);
+               console.log(11)
                // if (checkingPiece.classList.contains(`c`)) {
                return;
           }
-          else if ((kingInCheck || putsOwnKingInCheck) && targetIsInterposedSquare) {
+          else if ((kingInCheck || putsOwnKingInCheck) && oppPieceCapturable && !pinned) {
                console.log(kingInCheck, putsOwnKingInCheck, targetIsHighlightedSquare);
-               console.log(2)
+               console.log(22)
                oppPieceSquare.appendChild(clickedPiece);
           }
           else {
                console.log(kingInCheck, putsOwnKingInCheck, targetIsHighlightedSquare);
-               console.log(3)
+               console.log(33)
                oppPieceSquare.appendChild(clickedPiece);
           }
           removeInterposes();
@@ -219,12 +252,21 @@ board.addEventListener('click', function (e) {
      }
      else if (targetIsHighlightedSquare) {
           let oppKing = document.getElementById(`k1-${opponentPlayer[0]}`);
-          if (kingInCheck || putsOwnKingInCheck && !targetIsInterposedSquare) {
+          let ignorablePiece = [...pieces].find(piece => piece.classList.contains('ignorable'));
+          let pinned = oppKing.id[0] === ignorablePiece.id[0];
+
+          if (kingInCheck && putsOwnKingInCheck) {
                // console.log(kingInCheck, putsOwnKingInCheck, targetIsInterposedSquare);
+               console.log(0)
+               return;
+          }
+          else if ((kingInCheck || putsOwnKingInCheck) && (!targetIsInterposedSquare && !clickedPiece.id.startsWith('k')) && pinned) {
+               console.log(kingInCheck, putsOwnKingInCheck, targetIsInterposedSquare);
                console.log(1)
                return;
           }
-          else if ((kingInCheck || putsOwnKingInCheck) && targetIsInterposedSquare) {
+          else 
+          if ((kingInCheck || putsOwnKingInCheck) && (targetIsInterposedSquare || clickedPiece.id.startsWith('k')) && !pinned) {
                console.log(2)
                targetSquare.appendChild(clickedPiece);
           }
@@ -247,8 +289,6 @@ board.addEventListener('click', function (e) {
           if (checkOppKing(oppKing)) {
                checkingPiece = clickedPiece;
                interpositionSquares(oppKing);
-               // coveredSquaresFiller(checkingPiece);
-               // console.log("checkingPiece:", checkingPiece.id, "coveredSquares:", coveredSquares);
           }
 
           handlePlayerSwitch();
