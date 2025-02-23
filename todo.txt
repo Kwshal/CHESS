@@ -9,15 +9,14 @@
 
 
 # todo
-- NEW problem = pinned pieces moving to block other pieces check
-- NEW problem = pinned pieces moving to capture a piece opening a check to own king
-- NEW problem = own pieces being pinned restricting discovered checks.HALF DONE theyre moving but not interpositioning.
-
 - en passant
 - promotion
 - checkmates
 
+
 # Laters
+- dynamics ie transitions
+- themes
 - feedback  ??
 - checking piece puts a gunnnnnnnnn !!!!
 
