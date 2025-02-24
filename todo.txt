@@ -2,11 +2,7 @@
 
 
 # Problems
-- pieces jumping to capture the checking piece
-- pinned piece isn't moving even if it can capture the checking piece
-- 
-- discovered checks isn't working properly
-
+- king jumping files to go opposite side of the board - FIXED
 
 # todo
 - en passant
@@ -20,10 +16,13 @@
 - feedback  ??
 - checking piece puts a gunnnnnnnnn !!!!
 
+#Learnings:
+- +() turns a string into a number ie +("1" + "2") = 12
+- ?. nullish coalescing operator
+- [a,b] = [b,a] destructuring, it's like a swap. here first [] is destructuring way.
 
 
-
-
+ 
 
 
 
