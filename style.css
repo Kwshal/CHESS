@@ -1,9 +1,9 @@
 :root {
   /* --board-light-square: #ebecd0; */
-  --board-light-square: #D3D7E3;
+  --board-light-square: tan;
   /* --board-dark-square: #779556; */
   /* --board-dark-square: #586e40; */
-  --board-dark-square: #494b5abb;
+  --board-dark-square: #635147;
   --board-border: #b2b2b2;
 }
 
