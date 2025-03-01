@@ -2,115 +2,128 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>chess</title>
-    <link rel="stylesheet" href="style.css">
-    <script defer src="index.js"></script>
-    <!-- <script defer src="logic.js"></script> -->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>chess</title>
+        <link rel="stylesheet" href="style.css">
+        <script defer src="index.js"></script>
+        <!-- <script defer src="logic.js"></script> -->
 </head>
 
 <body>
-    <div id="board">
-        <div class="square white promotion-zone" slot="0"><img class="piece" id="r1-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/rb.svg" alt="">0</div>
-        <div class="square black promotion-zone" slot="1"><img class="piece" id="n1-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/nb.svg" alt="">1</div>
-        <div class="square white promotion-zone ooo" slot="2"><img class="piece" id="b1-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/bb.svg" alt="">2</div>
-        <div class="square black promotion-zone" slot="3"><img class="piece" id="q1-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/qb.svg" alt="">3</div>
-        <div class="square white promotion-zone" slot="4"><img class="piece" id="k1-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/kb.svg" alt="">4</div>
-        <div class="square black promotion-zone" slot="5"><img class="piece" id="b2-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/bb.svg" alt="">5</div>
-        <div class="square white promotion-zone oo" slot="6"><img class="piece" id="n2-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/nb.svg" alt="">6</div>
-        <div class="square black promotion-zone" slot="7"><img class="piece" id="r2-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/rb.svg" alt="">7</div>
-        <div class="square black home-row-b" slot="8"><img class="piece" id="p1-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">8</div>
-        <div class="square white home-row-b" slot="9"><img class="piece" id="p2-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">9</div>
-        <div class="square black home-row-b" slot="10"><img class="piece" id="p3-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">10</div>
-        <div class="square white home-row-b" slot="11"><img class="piece" id="p4-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">11</div>
-        <div class="square black home-row-b" slot="12"><img class="piece" id="p5-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">12</div>
-        <div class="square white home-row-b" slot="13"><img class="piece" id="p6-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">13</div>
-        <div class="square black home-row-b" slot="14"><img class="piece" id="p7-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">14</div>
-        <div class="square white home-row-b" slot="15"><img class="piece" id="p8-b"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">15</div>
-        <div class="square white" slot="16">16</div>
-        <div class="square black" slot="17">17</div>
-        <div class="square white" slot="18">18</div>
-        <div class="square black" slot="19">19</div>
-        <div class="square white" slot="20">20</div>
-        <div class="square black" slot="21">21</div>
-        <div class="square white" slot="22">22</div>
-        <div class="square black" slot="23">23</div>
-        <div class="square black" slot="24">24</div>
-        <div class="square white" slot="25">25</div>
-        <div class="square black" slot="26">26</div>
-        <div class="square white" slot="27">27</div>
-        <div class="square black" slot="28">28</div>
-        <div class="square white" slot="29">29</div>
-        <div class="square black" slot="30">30</div>
-        <div class="square white" slot="31">31</div>
-        <div class="square white" slot="32">32</div>
-        <div class="square black" slot="33">33</div>
-        <div class="square white" slot="34">34</div>
-        <div class="square black" slot="35">35</div>
-        <div class="square white" slot="36">36</div>
-        <div class="square black" slot="37">37</div>
-        <div class="square white" slot="38">38</div>
-        <div class="square black" slot="39">39</div>
-        <div class="square black" slot="40">40</div>
-        <div class="square white" slot="41">41</div>
-        <div class="square black" slot="42">42</div>
-        <div class="square white" slot="43">43</div>
-        <div class="square black" slot="44">44</div>
-        <div class="square white" slot="45">45</div>
-        <div class="square black" slot="46">46</div>
-        <div class="square white" slot="47">47</div>
-        <div class="square white home-row-w" slot="48"><img class="piece" id="p1-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">48</div>
-        <div class="square black home-row-w" slot="49"><img class="piece" id="p2-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">49</div>
-        <div class="square white home-row-w" slot="50"><img class="piece" id="p3-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">50</div>
-        <div class="square black home-row-w" slot="51"><img class="piece" id="p4-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">51</div>
-        <div class="square white home-row-w" slot="52"><img class="piece" id="p5-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">52</div>
-        <div class="square black home-row-w" slot="53"><img class="piece" id="p6-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">53</div>
-        <div class="square white home-row-w" slot="54"><img class="piece" id="p7-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">54</div>
-        <div class="square black home-row-w" slot="55"><img class="piece" id="p8-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">55</div>
-        <div class="square black promotion-zone" slot="56"><img class="piece" id="r1-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/rw.svg" alt="">56</div>
-        <div class="square white promotion-zone" slot="57"><img class="piece" id="n1-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/nw.svg" alt="">57</div>
-        <div class="square black promotion-zone ooo" slot="58"><img class="piece" id="b1-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/bw.svg" alt="">58</div>
-        <div class="square white promotion-zone" slot="59"><img class="piece" id="q1-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/qw.svg" alt="">59</div>
-        <div class="square black promotion-zone" slot="60"><img class="piece" id="k1-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/kw.svg" alt="">60</div>
-        <div class="square white promotion-zone" slot="61"><img class="piece" id="b2-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/bw.svg" alt="">61</div>
-        <div class="square black promotion-zone oo" slot="62"><img class="piece" id="n2-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/nw.svg" alt="">62</div>
-        <div class="square white promotion-zone" slot="63"><img class="piece" id="r2-w"
-                src="https://kwshal.github.io/CHESS/chess-pieces/rw.svg" alt="">63</div>
-    </div>
-    <p id="player">white</p>
+        <div id="board">
+                <div class="choose-piece-b">
+                        <span id=""><img class="piece promote" id="q3-b" src="https://kwshal.github.io/CHESS/chess-pieces/qb.svg" alt="Black Queen"></span>
+                        <span id=""><img class="piece promote" id="r3-b" src="https://kwshal.github.io/CHESS/chess-pieces/rb.svg" alt="Black Rook"></span>
+                        <span id=""><img class="piece promote" id="b3-b" src="https://kwshal.github.io/CHESS/chess-pieces/bb.svg" alt="Black Bishop"></span>
+                        <span id=""><img class="piece promote" id="n3-b" src="https://kwshal.github.io/CHESS/chess-pieces/nb.svg" alt="Black Knight"></span>
+                </div>
+                <div class="choose-piece-w">
+                        <span id=""><img class="piece promote" id="q3-w" src="https://kwshal.github.io/CHESS/chess-pieces/qw.svg" alt="White Queen"></span>
+                        <span id=""><img class="piece promote" id="r3-w" src="https://kwshal.github.io/CHESS/chess-pieces/rw.svg" alt="White Rook"></span>
+                        <span id=""><img class="piece promote" id="b3-w" src="https://kwshal.github.io/CHESS/chess-pieces/bw.svg" alt="White Bishop"></span>
+                        <span id=""><img class="piece promote" id="n3-w" src="https://kwshal.github.io/CHESS/chess-pieces/nw.svg" alt="White Knight"></span>
+                </div>
+                <div class="square white promotion-zone" slot="0">
+                        <img class="piece" id="r1-b" src="https://kwshal.github.io/CHESS/chess-pieces/rb.svg" alt="">0
+                </div>
+                <div class="square black promotion-zone" slot="1"><img class="piece" id="n1-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/nb.svg" alt="">1</div>
+                <div class="square white promotion-zone ooo" slot="2"><img class="piece" id="b1-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/bb.svg" alt="">2</div>
+                <div class="square black promotion-zone" slot="3"><img class="piece" id="q1-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/qb.svg" alt="">3</div>
+                <div class="square white promotion-zone" slot="4"><img class="piece" id="k1-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/kb.svg" alt="">4</div>
+                <div class="square black promotion-zone" slot="5"><img class="piece" id="b2-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/bb.svg" alt="">5</div>
+                <div class="square white promotion-zone oo" slot="6"><img class="piece" id="n2-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/nb.svg" alt="">6</div>
+                <div class="square black promotion-zone" slot="7"><img class="piece" id="r2-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/rb.svg" alt="">7</div>
+                <div class="square black home-row-b" slot="8"><img class="piece" id="p1-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">8</div>
+                <div class="square white home-row-b" slot="9"><img class="piece" id="p2-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">9</div>
+                <div class="square black home-row-b" slot="10"><img class="piece" id="p3-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">10</div>
+                <div class="square white home-row-b" slot="11"><img class="piece" id="p4-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">11</div>
+                <div class="square black home-row-b" slot="12"><img class="piece" id="p5-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">12</div>
+                <div class="square white home-row-b" slot="13"><img class="piece" id="p6-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">13</div>
+                <div class="square black home-row-b" slot="14"><img class="piece" id="p7-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">14</div>
+                <div class="square white home-row-b" slot="15"><img class="piece" id="p8-b"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pb.svg" alt="">15</div>
+                <div class="square white" slot="16">16</div>
+                <div class="square black" slot="17">17</div>
+                <div class="square white" slot="18">18</div>
+                <div class="square black" slot="19">19</div>
+                <div class="square white" slot="20">20</div>
+                <div class="square black" slot="21">21</div>
+                <div class="square white" slot="22">22</div>
+                <div class="square black" slot="23">23</div>
+                <div class="square black" slot="24">24</div>
+                <div class="square white" slot="25">25</div>
+                <div class="square black" slot="26">26</div>
+                <div class="square white" slot="27">27</div>
+                <div class="square black" slot="28">28</div>
+                <div class="square white" slot="29">29</div>
+                <div class="square black" slot="30">30</div>
+                <div class="square white" slot="31">31</div>
+                <div class="square white" slot="32">32</div>
+                <div class="square black" slot="33">33</div>
+                <div class="square white" slot="34">34</div>
+                <div class="square black" slot="35">35</div>
+                <div class="square white" slot="36">36</div>
+                <div class="square black" slot="37">37</div>
+                <div class="square white" slot="38">38</div>
+                <div class="square black" slot="39">39</div>
+                <div class="square black" slot="40">40</div>
+                <div class="square white" slot="41">41</div>
+                <div class="square black" slot="42">42</div>
+                <div class="square white" slot="43">43</div>
+                <div class="square black" slot="44">44</div>
+                <div class="square white" slot="45">45</div>
+                <div class="square black" slot="46">46</div>
+                <div class="square white" slot="47">47</div>
+                <div class="square white home-row-w" slot="48"><img class="piece" id="p1-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">48</div>
+                <div class="square black home-row-w" slot="49"><img class="piece" id="p2-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">49</div>
+                <div class="square white home-row-w" slot="50"><img class="piece" id="p3-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">50</div>
+                <div class="square black home-row-w" slot="51"><img class="piece" id="p4-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">51</div>
+                <div class="square white home-row-w" slot="52"><img class="piece" id="p5-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">52</div>
+                <div class="square black home-row-w" slot="53"><img class="piece" id="p6-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">53</div>
+                <div class="square white home-row-w" slot="54"><img class="piece" id="p7-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">54</div>
+                <div class="square black home-row-w" slot="55"><img class="piece" id="p8-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/pw.svg" alt="">55</div>
+                <div class="square black promotion-zone" slot="56"><img class="piece" id="r1-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/rw.svg" alt="">56</div>
+                <div class="square white promotion-zone" slot="57"><img class="piece" id="n1-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/nw.svg" alt="">57</div>
+                <div class="square black promotion-zone ooo" slot="58"><img class="piece" id="b1-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/bw.svg" alt="">58</div>
+                <div class="square white promotion-zone" slot="59"><img class="piece" id="q1-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/qw.svg" alt="">59</div>
+                <div class="square black promotion-zone" slot="60"><img class="piece" id="k1-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/kw.svg" alt="">60</div>
+                <div class="square white promotion-zone" slot="61"><img class="piece" id="b2-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/bw.svg" alt="">61</div>
+                <div class="square black promotion-zone oo" slot="62"><img class="piece" id="n2-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/nw.svg" alt="">62</div>
+                <div class="square white promotion-zone" slot="63"><img class="piece" id="r2-w"
+                                src="https://kwshal.github.io/CHESS/chess-pieces/rw.svg" alt="">63</div>
+        </div>
+        <p id="player">white</p>
 
 </body>
 

@@ -5,8 +5,8 @@
 - king jumping files to go opposite side of the board - FIXED
 
 # todo
-- en passant
-- promotion
+- en passant - DONE
+- promotion - 
 - checkmates
 
 

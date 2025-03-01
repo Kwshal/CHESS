@@ -1,6 +1,12 @@
 const board = document.getElementById('board');
 const pieces = document.querySelectorAll('.piece');
 const squares = document.querySelectorAll('.square');
+let choosePieceMenub = document.querySelector('.choose-piece-b');
+let choosePieceMenuw = document.querySelector('.choose-piece-w');
+
+let promotionSquare = null;
+let promoting = false; // when true, eat clickedPiece and promote promotingPiece
+let gameOver = false;
 let currentPlayer = 'white';
 let opponentPlayer = 'black';
 let clickedPiece = null;
@@ -97,13 +103,27 @@ function checkOppKing(oppKing) {
 board.addEventListener('click', function (e) {
      let ownKing = document.getElementById(`k1-${currentPlayer[0]}`);
      let oppKing = document.getElementById(`k1-${opponentPlayer[0]}`);
+     let promotablePiece = e.target.classList.contains('promote');
+     let promotingPiece = e.target;
      let ownPiece = e.target.classList.contains('piece') && e.target.id.endsWith(currentPlayer[0]);
      let oppPiece = e.target.classList.contains('piece') && e.target.id.endsWith(opponentPlayer[0]);
      let oppPieceSquare = e.target.parentElement;
      let oppPieceAttacked = e.target.parentElement.classList.contains('highlight');
      let targetSquare = e.target;
      let targetIsHighlightedSquare = e.target.classList.contains('highlight');
-     if (ownPiece) {
+
+     if (promotablePiece) {
+          promotionSquare.appendChild(promotingPiece);
+          promotingPiece.classList.remove('promote');
+          if (promoting) clickedPiece.remove();
+          promoting = false;
+          choosePieceMenub.style.display = 'none';
+          choosePieceMenuw.style.display = 'none';
+          removeHighlights();
+          updateCoveredSquares();
+          handlePlayerSwitch();
+     }
+     else if (ownPiece) {
           removeHighlights();
           clickedPiece = e.target;
           previousSquare = clickedPiece.parentElement;
@@ -126,6 +146,7 @@ board.addEventListener('click', function (e) {
           }
 
      } else if (oppPiece && oppPieceAttacked) {
+
           oppPieceSquare.appendChild(clickedPiece);
           e.target.remove();
           updateCoveredSquares();
@@ -133,20 +154,33 @@ board.addEventListener('click', function (e) {
                revertMove(previousSquare, clickedPiece);
                oppPieceSquare.appendChild(e.target);
                removeHighlights();
+               choosePieceMenub.style.display = 'none';
+               choosePieceMenuw.style.display = 'none';
                return;
           } else {
                e.target.remove();
                if (clickedPiece.id.startsWith('k') || clickedPiece.id.startsWith('r')) {
                     clickedPiece.classList.add('moved');
                }
-               handlePlayerSwitch();
+               if (clickedPiece.id.startsWith('p') && oppPieceSquare.classList.contains('promotion-zone')) {
+                    const choosePieceMenu = document.querySelector(`.choose-piece-${currentPlayer[0]}`);
+                    choosePieceMenu.style.display = 'flex';
+                    promotionSquare = oppPieceSquare;
+                    promoting = true;
+                    return;
+               }
+               else {
+                    handlePlayerSwitch();
+                    removeHighlights();
+               }
                // checkForCheckmate();
           }
           removeHighlights();
           // removeEnPassant();
      }
      else if (targetIsHighlightedSquare) {
-          let enPassantablePieceSquare = document.querySelector(`.${opponentPlayer[0]}-en-passantable`);               
+          // promotion logic
+          let enPassantablePieceSquare = document.querySelector(`.${opponentPlayer[0]}-en-passantable`);
           let enPassantablePiece = enPassantablePieceSquare?.firstElementChild;
           targetSquare.appendChild(clickedPiece);
           if (clickedPiece.id.startsWith('p') && targetSquare.classList.contains(`${opponentPlayer[0]}-en-passant`)) {
@@ -159,6 +193,9 @@ board.addEventListener('click', function (e) {
                     enPassantablePieceSquare.appendChild(enPassantablePiece);
                }
                removeHighlights();
+               choosePieceMenub.style.display = 'none';
+               choosePieceMenuw.style.display = 'none';
+
                return;
           } else {
                if (clickedPiece.id.startsWith('k') && canCastle && targetSquare.classList.contains('ooo')) {
@@ -168,12 +205,24 @@ board.addEventListener('click', function (e) {
                     castledRookPlace2.appendChild(castlingRook2);
                     canCastle = false;
                }
+               if (clickedPiece.id.startsWith('p') && targetSquare.classList.contains('promotion-zone')) {
+
+                    const choosePieceMenu = document.querySelector(`.choose-piece-${currentPlayer[0]}`);
+                    choosePieceMenu.style.display = 'flex';
+                    promotionSquare = targetSquare;
+                    promoting = true;
+                    return;
+               }
                // checkForCheckmate();
-               handlePlayerSwitch();
-               removeHighlights();
+               else {
+                    handlePlayerSwitch();
+                    removeHighlights();
+               }
                // removeEnPassant();
           }
      } else removeHighlights();
+     // updateCoveredSquares();
+
 });
 
 
@@ -189,7 +238,7 @@ let pawnyHighlight = function () {
      if (!pieceInFront) {
           if (squares[currentSquare - 8 * flipfactor]) squares[currentSquare - 8 * flipfactor].classList.add('highlight');
           if (homeRow && !pieceInFront2) {
-               if (squares[currentSquare - 16 * flipfactor]) squares[currentSquare - 16 * flipfactor].classList.add('highlight',`${currentPlayer[0]}-en-passantable`);
+               if (squares[currentSquare - 16 * flipfactor]) squares[currentSquare - 16 * flipfactor].classList.add('highlight', `${currentPlayer[0]}-en-passantable`);
                if (squares[currentSquare - 8 * flipfactor]) squares[currentSquare - 8 * flipfactor].classList.add(`${currentPlayer[0]}-en-passant`);
           }
      }
