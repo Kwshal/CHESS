@@ -1,9 +1,9 @@
 :root {
   /* --board-light-square: #ebecd0; */
-  --board-light-square: #D3D7E3;
+  --board-light-square: tan;
   /* --board-dark-square: #779556; */
   /* --board-dark-square: #586e40; */
-  --board-dark-square: #494b5abb;
+  --board-dark-square: #635147;
   --board-border: #b2b2b2;
 }
 
@@ -159,6 +159,7 @@ body {
   display: none;
   backdrop-filter: blur(3px);
 }
+<<<<<<< HEAD
 
 .choose-piece-b img:hover, .choose-piece-w img:hover {
   cursor: pointer;
@@ -166,3 +167,8 @@ body {
   transition: transform 0.3s ease-in-out;
 
 }
+=======
+.w-en-passant, .b-en-passant {
+  border: 5px solid #000;
+}
+>>>>>>> 9767e6c013b110eb8d3d9bf041493ca39021b134
