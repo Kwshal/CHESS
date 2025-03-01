@@ -41,11 +41,6 @@ function removeHighlights() {
           square.classList.remove(`${currentPlayer[0]}-en-passantable`);
      });
 }
-// function removeEnPassant() {
-//      squares.forEach(square => {
-//           square.classList.remove('en-passant');
-//      });
-// }
 function checkOwnKing(ownKing) {
      squareCovered(ownKing.parentElement) ? putsOwnKingInCheck = true : putsOwnKingInCheck = false;
      return putsOwnKingInCheck;
@@ -55,50 +50,59 @@ function checkOppKing(oppKing) {
      return kingInCheck;
 }
 // function setCheckingPiece(king) {
-//      pieces.forEach(piece => {
-//           if (king.parentElement.classList.contains(`${piece.id}-covered`) && piece.id.endsWith(currentPlayer[0])) {
-//                checkingPiece = piece;
-//           }
-//      });
+//      pieces.find(piece => king.parentElement.classList.contains(`${piece.id}-covered`));
 //      return checkingPiece;
 // }
 
-// function interpositionSquares(king) {
-//      let ignorablePiece = [...pieces].find(piece => piece.classList.contains('ignorable'));
-//      interposedSquares = [];
-//      if (setCheckingPiece(king) && ignorablePiece && checkingPiece.id === ignorablePiece.id) {
-//           let kingSquare = Number(king.parentElement.getAttribute('slot'));
-//           let checkingPieceSqaure = Number(checkingPiece.parentElement.getAttribute("slot"));
-//           let d = Math.abs(kingSquare - checkingPieceSqaure); // difference
-//           let n = d < 56 && d % 7 === 0 ? 7 : d % 9 === 0 ? 9 : d >= 8 && d % 8 === 0 ? 8 : d < 8 ? 1 : null;
+function interpositionSquares(oppKing) {
+     // let checkingPiece = pieces.find(piece => piece.id.endsWith(currentPlayer[0]) && oppKing.parentElement.classList.contains(`${piece.id}-covered`));
+     for (let piece of pieces) {
+          if (!piece.id.endsWith(oppKing.id[3]) && oppKing.parentElement.classList.contains(`${piece.id}-covered`)) {
+               checkingPiece = piece;
+               break;
+          }
+     }
+     interposedSquares = [];
 
-//           checkingPiece.parentElement.classList.add("interposed");
-//           if (n !== null) {
+     if (checkingPiece) {
+          let kingSquare = +oppKing.parentElement.getAttribute('slot');
+          let checkingPieceSqaure = +checkingPiece.parentElement.getAttribute("slot");
+          let d = Math.abs(kingSquare - checkingPieceSqaure); // difference
+          let n = d < 56 && d % 7 === 0 ? 7 : d % 9 === 0 ? 9 : d >= 8 && d % 8 === 0 ? 8 : d < 8 ? 1 : null;
 
-//                if (kingSquare > checkingPieceSqaure) {
-//                     for (let i = checkingPieceSqaure + n; i < kingSquare; i += n) {
-//                          squares[i].classList.add('interposed');
-//                          interposedSquares.push(i);
-//                     }
-//                } else {
-//                     for (let i = checkingPieceSqaure - n; i > kingSquare; i -= n) {
-//                          squares[i].classList.add('interposed');
-//                          interposedSquares.push(i);
-//                     }
-//                }
-//           }
-//      }
-//      return interposedSquares;
-// }
+          checkingPiece.parentElement.classList.add("interposed");
+          if (n !== null) {
 
-// function checkForCheckmate(king) {
-//      let cannotEscapeCheck = interpositionSquares(king).every(square => {
-//           squares[square].classList.contains('');
-//      });
-//      if (checkOppKing(king) && !kingCanMove && interposedSquares.length === 0) {
-//           alert('Checkmate');
-//      }
-// }
+               if (kingSquare > checkingPieceSqaure) {
+                    for (let i = checkingPieceSqaure + n; i < kingSquare; i += n) {
+                         squares[i].classList.add('interposed');
+                         interposedSquares.push(i);
+                    }
+               } else {
+                    for (let i = checkingPieceSqaure - n; i > kingSquare; i -= n) {
+                         squares[i].classList.add('interposed');
+                         interposedSquares.push(i);
+                    }
+               }
+          }
+     }
+     console.log(interposedSquares);
+     return interposedSquares;
+}
+
+function checkForCheckmate(king) {
+     let gameOver = false;
+     king.click();
+     if (!kingyHighlight(king) && kingInCheck) {
+          gameOver = interpositionSquares(king).every(square => {
+               !squares[square].classList.contains(`${opponentPlayer[0]}-covered`);
+          });
+     }
+     if (gameOver) {
+          alert('Checkmate');
+     }
+     removeHighlights();
+}
 
 board.addEventListener('click', function (e) {
      let ownKing = document.getElementById(`k1-${currentPlayer[0]}`);
@@ -174,9 +178,16 @@ board.addEventListener('click', function (e) {
                     removeHighlights();
                }
                // checkForCheckmate();
+          if (checkOppKing(oppKing)) {
+               interpositionSquares(oppKing);
+               // checkForChecks();
+               checkForCheckmate(oppKing);
+
+          }
           }
           removeHighlights();
           // removeEnPassant();
+          kingCanMove = false;
      }
      else if (targetIsHighlightedSquare) {
           // promotion logic
@@ -218,10 +229,16 @@ board.addEventListener('click', function (e) {
                     handlePlayerSwitch();
                     removeHighlights();
                }
+          if (checkOppKing(oppKing)) {
+               interpositionSquares(oppKing);
+               // checkForChecks();
+               checkForCheckmate(oppKing);
+          }
                // removeEnPassant();
           }
      } else removeHighlights();
      // updateCoveredSquares();
+     kingCanMove = false;
 
 });
 
@@ -320,10 +337,15 @@ let kingyHighlight = function () {
                } else if (squares[currentSquare + square] && squares[currentSquare + square].firstElementChild && squares[currentSquare + square].firstElementChild.id.endsWith(currentPlayer[0])) {
                     continue;
                }
-               squares[currentSquare + square].classList.add('highlight');
+               if (squares[currentSquare + square]) {
+                    squares[currentSquare + square].classList.add('highlight');
+                    kingCanMove = true;
+               }
+               
           }
      };
      castleCriteria();
+     return kingCanMove;
 }
 
 let castleCriteria = function () {
