@@ -102,7 +102,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #494b5a;
+  background-color: #88604a;
 }
 .w-covered.black:has(img#k1-b)::before, .b-covered.black:has(img#k1-w)::before {
   content: '';
@@ -159,7 +159,6 @@ body {
   display: none;
   backdrop-filter: blur(3px);
 }
-<<<<<<< HEAD
 
 .choose-piece-b img:hover, .choose-piece-w img:hover {
   cursor: pointer;
@@ -167,8 +166,3 @@ body {
   transition: transform 0.3s ease-in-out;
 
 }
-=======
-.w-en-passant, .b-en-passant {
-  border: 5px solid #000;
-}
->>>>>>> 9767e6c013b110eb8d3d9bf041493ca39021b134
