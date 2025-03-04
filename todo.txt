@@ -1,13 +1,19 @@
 
 
 
+#BUG:
+- castled rook highlighting isnt updated by updateCoveredSquares - FIXED
+
+
+
 # Problems
+- NEW promoted piece isnt highlighting the interposed squares
+
 - king jumping files to go opposite side of the board - FIXED
 
 # todo
-- en passant - DONE
-- promotion - 
-- checkmates
+- promotion - DONE but bugs
+- checkmates -
 
 
 # Laters
